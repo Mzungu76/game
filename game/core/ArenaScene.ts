@@ -29,9 +29,16 @@ export class ArenaScene extends Phaser.Scene {
 
   create() {
     this.physics.world.setBounds(0, 0, ARENA.width, ARENA.height);
-    this.cameras.main.setBackgroundColor('#111827');
-    this.add.rectangle(ARENA.width / 2, ARENA.height / 2, ARENA.width - 40, ARENA.height - 40, 0x1f2937).setStrokeStyle(4, 0xf97316);
-    this.add.text(16, 16, ARENA.name, { color: '#f59e0b', fontSize: '24px' });
+    this.cameras.main.setBackgroundColor('#141414');
+    this.add.rectangle(ARENA.width / 2, ARENA.height / 2, ARENA.width - 40, ARENA.height - 40, 0x242424).setStrokeStyle(6, 0xf59e0b);
+    this.add.rectangle(ARENA.width / 2, 80, ARENA.width - 160, 26, 0xfacc15, 0.2).setStrokeStyle(2, 0x111111);
+    this.add.text(16, 16, `⚠ ${ARENA.name}`, { color: '#f59e0b', fontSize: '24px' });
+    for (let i = 0; i < 14; i++) {
+      const x = Phaser.Math.Between(90, ARENA.width - 90);
+      const y = Phaser.Math.Between(110, ARENA.height - 90);
+      const color = [0x6b7280, 0x334155, 0xa16207, 0x0ea5e9][i % 4];
+      this.add.rectangle(x, y, Phaser.Math.Between(16, 36), Phaser.Math.Between(10, 22), color, 0.55).setRotation(Phaser.Math.FloatBetween(-0.6, 0.6));
+    }
 
     const p = ARENA.respawnPoints[0];
     const b = ARENA.respawnPoints[1];
@@ -41,7 +48,9 @@ export class ArenaScene extends Phaser.Scene {
     this.cursors = this.input.keyboard!.addKeys('W,A,S,D,SPACE,ONE,TWO,E,R') as { [key: string]: Phaser.Input.Keyboard.Key };
     this.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => this.throwObject(this.player, pointer.worldX, pointer.worldY));
 
-    this.hud = this.add.text(16, 52, '', { color: '#e4e4e7', fontSize: '16px' });
+    const hudBg = this.add.rectangle(18, 48, 540, 64, 0x09090b, 0.85).setOrigin(0, 0).setStrokeStyle(2, 0xf59e0b);
+    hudBg.setDepth(20);
+    this.hud = this.add.text(30, 58, '', { color: '#f4f4f5', fontSize: '16px' }).setDepth(21);
 
     this.crate = this.physics.add.image(ARENA.width / 2, ARENA.height / 2, '__WHITE');
     this.crate.setDisplaySize(30, 30);
@@ -50,10 +59,11 @@ export class ArenaScene extends Phaser.Scene {
     this.physics.add.overlap(this.player, this.crate, () => this.openPackage());
 
     this.packageOverlay = this.add.container(40, ARENA.height - 170);
-    const bg = this.add.rectangle(0, 0, 560, 140, 0x0b1220, 0.9).setOrigin(0, 0).setStrokeStyle(2, 0xf97316);
-    const title = this.add.text(12, 8, 'CASSA ROBACCIA // Etichette Industriali', { fontSize: '14px', color: '#facc15' });
-    const body = this.add.text(12, 34, '', { fontSize: '14px', color: '#e4e4e7' }).setName('body');
-    this.packageOverlay.add([bg, title, body]);
+    const bg = this.add.rectangle(0, 0, 620, 150, 0x121212, 0.92).setOrigin(0, 0).setStrokeStyle(3, 0xf59e0b);
+    const tape = this.add.rectangle(20, -6, 130, 16, 0xfacc15, 0.9).setOrigin(0, 0).setRotation(-0.08);
+    const title = this.add.text(12, 10, 'CASSA ROBACCIA // SCELTA RAPIDA', { fontSize: '14px', color: '#facc15' });
+    const body = this.add.text(12, 38, '', { fontSize: '14px', color: '#e4e4e7' }).setName('body');
+    this.packageOverlay.add([bg, tape, title, body]);
     this.packageOverlay.setVisible(false);
     playBeep(this, 'pick');
 

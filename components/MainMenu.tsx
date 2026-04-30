@@ -3,17 +3,21 @@ import Link from 'next/link';
 export function MainMenu() {
   return (
     <main className="mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center gap-6 p-6 text-center">
-      <span className="rounded-full border border-hazard/80 bg-hazard/20 px-3 py-1 text-sm font-semibold uppercase tracking-wider">
-        Toy Junkpunk Diorama
-      </span>
-      <h1 className="text-5xl font-black uppercase tracking-tight text-hazard">Robaccia</h1>
-      <p className="max-w-2xl text-lg text-zinc-300">
-        Arena shooter caotico: scegli una delle due robacce del pacchetto e lanciala contro il bot nel
-        <strong> Magazzino della Vergogna</strong>.
-      </p>
-      <Link href="/play" className="rounded-md bg-hazard px-6 py-3 font-bold text-zinc-900 hover:bg-orange-400">
-        Gioca Ora
-      </Link>
+      <div className="junk-panel w-full max-w-3xl p-8">
+        <span className="hazard-label">Toy Junkpunk Diorama</span>
+        <h1 className="mt-4 text-5xl font-black uppercase tracking-tight text-amber-400">Robaccia</h1>
+        <p className="mt-3 text-lg text-zinc-200">
+          Arena giocattolo fatta di cartone, metallo ammaccato e plastica rattoppata. Scegli robaccia e lanciala.
+        </p>
+        <div className="mt-6 flex items-center justify-center gap-3">
+          <span className="junk-card">⚙️ Metallo</span>
+          <span className="junk-card">📦 Cartone</span>
+          <span className="junk-card">🧪 Pasticci</span>
+        </div>
+        <div className="mt-8">
+          <Link href="/play" className="junk-btn">Entra nel Magazzino</Link>
+        </div>
+      </div>
     </main>
   );
 }
