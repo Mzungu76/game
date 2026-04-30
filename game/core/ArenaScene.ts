@@ -98,8 +98,11 @@ export class ArenaScene extends Phaser.Scene {
       const kb = obj.knockback * fx.knockback;
       target.hp -= dmg;
       const knock = Phaser.Math.Angle.Between(attacker.x, attacker.y, target.x, target.y);
-      target.body.velocity.x += Math.cos(knock) * kb;
-      target.body.velocity.y += Math.sin(knock) * kb;
+      const targetBody = target.body as Phaser.Physics.Arcade.Body | null;
+      if (targetBody) {
+        targetBody.velocity.x += Math.cos(knock) * kb;
+        targetBody.velocity.y += Math.sin(knock) * kb;
+      }
       proj.destroy();
       if (target.hp <= 0) this.onKO(attacker, target);
     });
@@ -109,16 +112,18 @@ export class ArenaScene extends Phaser.Scene {
     attacker.score += 1;
     target.hp = 0;
     target.setVisible(false);
-    target.body.enable = false;
+    const targetBody = target.body as Phaser.Physics.Arcade.Body | null;
+    if (targetBody) targetBody.enable = false;
     target.respawnAt = this.time.now + 2200;
   }
 
   private checkRespawn(f: Fighter) {
-    if (f.respawnAt && f.respawnAt <= this.time.now && !f.body.enable) {
+    const fighterBody = f.body as Phaser.Physics.Arcade.Body | null;
+    if (f.respawnAt && f.respawnAt <= this.time.now && fighterBody && !fighterBody.enable) {
       const point = Phaser.Utils.Array.GetRandom(ARENA.respawnPoints);
       f.setPosition(point.x, point.y);
       f.hp = 100;
-      f.body.enable = true;
+      fighterBody.enable = true;
       f.setVisible(true);
       f.respawnAt = 0;
     }
