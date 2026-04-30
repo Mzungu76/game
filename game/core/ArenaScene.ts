@@ -1,4 +1,4 @@
-import Phaser from 'phaser';
+import * as Phaser from 'phaser';
 import { ARENA } from '../data/arena';
 import { getRandomPackage, ThrowableObject } from '../data/objects';
 import { applyEffectMultiplier } from './effects';

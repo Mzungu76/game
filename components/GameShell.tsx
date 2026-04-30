@@ -9,7 +9,7 @@ export function GameShell() {
     let game: import('phaser').Game | undefined;
 
     const boot = async () => {
-      const Phaser = (await import('phaser')).default;
+      const Phaser = await import('phaser');
       const { ArenaScene } = await import('@/game/core/ArenaScene');
       if (!mountRef.current) return;
 
